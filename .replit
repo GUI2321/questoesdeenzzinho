@@ -1,0 +1,55 @@
+entrypoint = "main.py"
+modules = ["python-3.11"]
+
+[nix]
+channel = "stable-24_05"
+packages = ["bazel", "cairo", "curl", "double-conversion", "ffmpeg-full", "fontconfig", "freetype", "ghostscript", "giflib", "gitFull", "glib", "glibcLocales", "gobject-introspection", "grpc", "gtk3", "harfbuzz", "jsoncpp", "lcms2", "libimagequant", "libjpeg", "libjpeg_turbo", "libtiff", "libwebp", "libxcrypt", "libyaml", "nsync", "openjpeg", "openssl", "pango", "pkg-config", "qhull", "snappy", "tcl", "tk", "which", "zlib"]
+
+[unitTest]
+language = "python3"
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix"]
+
+[deployment]
+run = ["python3", "main.py"]
+deploymentTarget = "cloudrun"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 5900
+externalPort = 80
+
+[[ports]]
+localPort = 46633
+externalPort = 3001
+
+[agent]
+expertMode = true
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "MathQuest Web App"
+
+[[workflows.workflow]]
+name = "MathQuest Web App"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python app.py"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"

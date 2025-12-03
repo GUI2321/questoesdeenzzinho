@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Sobre - MathQuest{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container container-narrow">
+        <h1 class="page-title">Sobre o MathQuest</h1>
+        
+        <div class="about-content">
+            <p class="lead">
+                O MathQuest é um gerador avançado de questões matemáticas, desenvolvido para 
+                criar bancos de questões únicos e de alta qualidade para preparação em 
+                vestibulares e concursos.
+            </p>
+            
+            <h2>Características Principais</h2>
+            
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h3>Questões 100% Únicas</h3>
+                    <p>
+                        Cada questão é gerada algoritmicamente com parâmetros únicos. 
+                        O sistema utiliza hashing para garantir que nunca haja repetição 
+                        de enunciados ou estruturas.
+                    </p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>Organização por Volume e Tópico</h3>
+                    <p>
+                        As questões são organizadas seguindo a estrutura clássica dos 
+                        "Fundamentos de Matemática Elementar", cobrindo desde conjuntos 
+                        e funções até cálculo diferencial e integral.
+                    </p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>Três Níveis de Dificuldade</h3>
+                    <p>
+                        <strong>Fácil (40%):</strong> Nível Ensino Fundamental / Médio inicial<br>
+                        <strong>Médio (40%):</strong> Nível ENEM / Vestibulares<br>
+                        <strong>Difícil (20%):</strong> Nível ITA / IME / Olimpíadas
+                    </p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>Enunciados Contextualizados</h3>
+                    <p>
+                        Os enunciados são elaborados com contextos do cotidiano, 
+                        tornando as questões mais interessantes e significativas 
+                        para o aprendizado.
+                    </p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>Gabarito e Resolução</h3>
+                    <p>
+                        Todas as questões incluem gabarito e resolução detalhada, 
+                        permitindo estudo autônomo e compreensão profunda dos conceitos.
+                    </p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>PDF Profissional</h3>
+                    <p>
+                        Os documentos são gerados com formatação elegante e profissional, 
+                        prontos para impressão ou estudo digital.
+                    </p>
+                </div>
+            </div>
+            
+            <h2>Volumes Disponíveis</h2>
+            
+            <ol class="volumes-list">
+                <li>Conjuntos, Lógica e Funções Básicas</li>
+                <li>Potências, Raízes, Logaritmos e Exponenciais</li>
+                <li>Trigonometria</li>
+                <li>Sequências, Matrizes e Sistemas Lineares</li>
+                <li>Análise Combinatória e Probabilidade</li>
+                <li>Números Complexos e Polinômios</li>
+                <li>Geometria Analítica</li>
+                <li>Limites, Derivadas e Integrais</li>
+                <li>Geometria Plana</li>
+                <li>Geometria Espacial</li>
+                <li>Matemática Financeira e Estatística</li>
+            </ol>
+            
+            <h2>Como Usar</h2>
+            
+            <ol class="how-to-list">
+                <li>Acesse a página "Gerar Questões"</li>
+                <li>Selecione o volume desejado</li>
+                <li>Escolha um tópico específico ou gere para todo o volume</li>
+                <li>Defina a quantidade de questões</li>
+                <li>Clique em "Gerar Questões"</li>
+                <li>Faça o download do PDF ou visualize as questões na tela</li>
+            </ol>
+            
+            <div class="cta-box">
+                <h3>Pronto para começar?</h3>
+                <p>Gere suas primeiras questões agora mesmo!</p>
+                <a href="{{ url_for('generate') }}" class="btn btn-primary btn-large">
+                    Gerar Questões
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Gerar Questões - MathQuest{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container container-narrow">
+        <h1 class="page-title">Gerar Questões</h1>
+        <p class="page-description">
+            Configure as opções abaixo para gerar seu banco de questões personalizado
+        </p>
+        
+        {% if error %}
+        <div class="alert alert-error">
+            <strong>Erro:</strong> {{ error }}
+        </div>
+        {% endif %}
+        
+        <form method="POST" action="{{ url_for('generate') }}" class="generate-form">
+            <div class="form-group">
+                <label for="volume_id" class="form-label">Volume</label>
+                <select name="volume_id" id="volume_id" class="form-select" required>
+                    {% for vol_id, volume in volumes.items() %}
+                    <option value="{{ vol_id }}">
+                        Volume {{ vol_id }} - {{ volume.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="topic_id" class="form-label">Tópico</label>
+                <select name="topic_id" id="topic_id" class="form-select">
+                    <option value="all">Todos os tópicos do volume</option>
+                </select>
+                <p class="form-help">Selecione um tópico específico ou gere para todo o volume</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="questions_count" class="form-label">Quantidade de Questões</label>
+                <input type="number" name="questions_count" id="questions_count" 
+                       class="form-input" value="20" min="5" max="100" required>
+                <p class="form-help">Por tópico. Distribuição: 40% fácil, 40% médio, 20% difícil</p>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-checkbox">
+                    <input type="checkbox" name="generate_pdf" checked>
+                    <span class="checkbox-label">Gerar PDF para download</span>
+                </label>
+                <p class="form-help">Se desmarcado, as questões serão exibidas na tela</p>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-large">
+                    <span class="btn-icon">⚡</span>
+                    Gerar Questões
+                </button>
+            </div>
+        </form>
+        
+        <div class="info-box">
+            <h3 class="info-title">Sobre a Geração</h3>
+            <ul class="info-list">
+                <li>Cada questão é gerada de forma única e não repetida</li>
+                <li>Os enunciados são contextualizados e criativos</li>
+                <li>Inclui gabarito e resolução detalhada</li>
+                <li>PDFs são formatados profissionalmente</li>
+                <li>Gerar um volume completo pode levar alguns segundos</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<script>
+const volumeSelect = document.getElementById('volume_id');
+const topicSelect = document.getElementById('topic_id');
+
+const topicsData = {
+    {% for vol_id, volume in volumes.items() %}
+    {{ vol_id }}: [
+        {% for topic in volume.topics %}
+        { id: "{{ topic.id }}", name: "{{ topic.name }}" },
+        {% endfor %}
+    ],
+    {% endfor %}
+};
+
+function updateTopics() {
+    const volumeId = volumeSelect.value;
+    const topics = topicsData[volumeId] || [];
+    
+    topicSelect.innerHTML = '<option value="all">Todos os tópicos do volume</option>';
+    
+    topics.forEach(topic => {
+        const option = document.createElement('option');
+        option.value = topic.id;
+        option.textContent = `${topic.id} - ${topic.name}`;
+        topicSelect.appendChild(option);
+    });
+}
+
+volumeSelect.addEventListener('change', updateTopics);
+updateTopics();
+
+const urlParams = new URLSearchParams(window.location.search);
+const volumeParam = urlParams.get('volume');
+if (volumeParam) {
+    volumeSelect.value = volumeParam;
+    updateTopics();
+}
+</script>
+{% endblock %}

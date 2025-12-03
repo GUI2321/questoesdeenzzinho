@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}{{ question_set.topic_name }} - Questões{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="{{ url_for('index') }}">Volumes</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="{{ url_for('preview_volume', volume_id=volume.id) }}">Volume {{ volume.id }}</a>
+            <span class="breadcrumb-separator">/</span>
+            <span>{{ question_set.topic_name }}</span>
+        </div>
+        
+        <div class="questions-header">
+            <h1 class="page-title">{{ question_set.topic_name }}</h1>
+            <p class="page-description">
+                {{ question_set.total_count() }} questões geradas
+            </p>
+            
+            <div class="difficulty-summary">
+                <span class="diff-badge diff-easy">
+                    {{ question_set.get_easy_questions()|length }} Fáceis
+                </span>
+                <span class="diff-badge diff-medium">
+                    {{ question_set.get_medium_questions()|length }} Médias
+                </span>
+                <span class="diff-badge diff-hard">
+                    {{ question_set.get_hard_questions()|length }} Difíceis
+                </span>
+            </div>
+        </div>
+        
+        {% set difficulties = [
+            ('Questões Fáceis', 'easy', question_set.get_easy_questions()),
+            ('Questões Médias', 'medium', question_set.get_medium_questions()),
+            ('Questões Difíceis', 'hard', question_set.get_hard_questions())
+        ] %}
+        
+        {% set ns = namespace(counter=1) %}
+        
+        {% for diff_name, diff_class, questions in difficulties %}
+        {% if questions %}
+        <div class="difficulty-section">
+            <h2 class="difficulty-title difficulty-{{ diff_class }}">{{ diff_name }}</h2>
+            
+            <div class="questions-list">
+                {% for q in questions %}
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Questão {{ ns.counter }}</span>
+                        <span class="question-diff diff-{{ diff_class }}">
+                            {{ q.difficulty.value|capitalize }}
+                        </span>
+                    </div>
+                    
+                    <div class="question-statement">
+                        {{ q.statement }}
+                    </div>
+                    
+                    <div class="question-alternatives">
+                        {% for alt in q.alternatives %}
+                        <div class="alternative {% if alt.is_correct %}correct{% endif %}">
+                            <span class="alt-letter">{{ alt.letter }})</span>
+                            <span class="alt-text">{{ alt.text }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="question-answer">
+                        <div class="answer-row">
+                            <span class="answer-label">Gabarito:</span>
+                            <span class="answer-value">{{ q.correct_answer }}</span>
+                        </div>
+                        <div class="answer-row">
+                            <span class="answer-label">Resolução:</span>
+                            <div class="resolution-text">{{ q.resolution }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% set ns.counter = ns.counter + 1 %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}MathQuest - Banco de Questões Matemáticas{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Banco de Questões Matemáticas</h1>
+        <p class="hero-subtitle">
+            Questões únicas e variadas, organizadas por volume, tópico e dificuldade.
+            Preparação de excelência para ITA, IME, ENEM e vestibulares.
+        </p>
+        <a href="{{ url_for('generate') }}" class="btn btn-primary btn-large">
+            Gerar Questões
+        </a>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Volumes Disponíveis</h2>
+        <p class="section-description">
+            Selecione um volume para explorar os tópicos ou gerar questões
+        </p>
+        
+        <div class="volumes-grid">
+            {% for vol_id, volume in volumes.items() %}
+            <div class="volume-card">
+                <div class="volume-header">
+                    <span class="volume-number">Volume {{ vol_id }}</span>
+                    <span class="volume-topics-count">{{ volume.topics|length }} tópicos</span>
+                </div>
+                <h3 class="volume-title">{{ volume.name }}</h3>
+                <p class="volume-description">{{ volume.description }}</p>
+                <div class="volume-topics-preview">
+                    {% for topic in volume.topics[:3] %}
+                    <span class="topic-tag">{{ topic.name }}</span>
+                    {% endfor %}
+                    {% if volume.topics|length > 3 %}
+                    <span class="topic-tag more">+{{ volume.topics|length - 3 }} mais</span>
+                    {% endif %}
+                </div>
+                <div class="volume-actions">
+                    <a href="{{ url_for('preview_volume', volume_id=vol_id) }}" class="btn btn-secondary">
+                        Ver Tópicos
+                    </a>
+                    <a href="{{ url_for('generate') }}?volume={{ vol_id }}" class="btn btn-primary">
+                        Gerar PDF
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section section-features">
+    <div class="container">
+        <h2 class="section-title">Características do Sistema</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3 class="feature-title">Questões Únicas</h3>
+                <p class="feature-description">
+                    Cada questão é gerada de forma única, sem repetição de estruturas ou contextos.
+                    Sistema de hash garante originalidade absoluta.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">Três Níveis de Dificuldade</h3>
+                <p class="feature-description">
+                    Distribuição balanceada: 40% fácil (Ensino Fundamental), 
+                    40% médio (ENEM/Vestibular), 20% difícil (ITA/IME).
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3 class="feature-title">11 Volumes Completos</h3>
+                <p class="feature-description">
+                    Cobertura completa do currículo de matemática: conjuntos, funções,
+                    trigonometria, geometria, cálculo e muito mais.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📄</div>
+                <h3 class="feature-title">PDF Profissional</h3>
+                <p class="feature-description">
+                    Documentos elegantes e bem formatados, prontos para impressão
+                    ou estudo digital. Design limpo e didático.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <h3 class="feature-title">Gabarito e Resolução</h3>
+                <p class="feature-description">
+                    Todas as questões incluem gabarito e resolução detalhada,
+                    facilitando o estudo autônomo.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3 class="feature-title">Contextos Criativos</h3>
+                <p class="feature-description">
+                    Enunciados contextualizados e interessantes, que tornam
+                    o aprendizado mais engajador e significativo.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Volume {{ volume.id }} - {{ volume.name }} - MathQuest{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="{{ url_for('index') }}">Volumes</a>
+            <span class="breadcrumb-separator">/</span>
+            <span>Volume {{ volume.id }}</span>
+        </div>
+        
+        <div class="volume-header-detail">
+            <div class="volume-badge">Volume {{ volume.id }}</div>
+            <h1 class="page-title">{{ volume.name }}</h1>
+            <p class="page-description">{{ volume.description }}</p>
+            
+            <div class="volume-stats">
+                <div class="stat">
+                    <span class="stat-number">{{ topics|length }}</span>
+                    <span class="stat-label">Tópicos</span>
+                </div>
+            </div>
+            
+            <a href="{{ url_for('generate') }}?volume={{ volume.id }}" class="btn btn-primary">
+                Gerar PDF do Volume Completo
+            </a>
+        </div>
+        
+        <h2 class="section-title">Tópicos</h2>
+        
+        <div class="topics-list">
+            {% for topic in topics %}
+            <div class="topic-card">
+                <div class="topic-header">
+                    <span class="topic-id">{{ topic.id }}</span>
+                    <h3 class="topic-title">{{ topic.name }}</h3>
+                </div>
+                <p class="topic-description">{{ topic.description }}</p>
+                
+                {% if topic.subtopics %}
+                <div class="subtopics">
+                    <h4 class="subtopics-title">Subtópicos:</h4>
+                    <div class="subtopics-list">
+                        {% for subtopic in topic.subtopics %}
+                        <span class="subtopic-tag">{{ subtopic }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if topic.concepts %}
+                <div class="concepts">
+                    <h4 class="concepts-title">Conceitos-chave:</h4>
+                    <div class="concepts-list">
+                        {% for concept in topic.concepts[:6] %}
+                        <span class="concept-tag">{{ concept }}</span>
+                        {% endfor %}
+                        {% if topic.concepts|length > 6 %}
+                        <span class="concept-tag more">+{{ topic.concepts|length - 6 }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="topic-actions">
+                    <a href="{{ url_for('generate') }}?volume={{ volume.id }}&topic={{ topic.id }}" 
+                       class="btn btn-secondary btn-small">
+                        Gerar Questões
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
